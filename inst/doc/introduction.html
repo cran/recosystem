@@ -10,7 +10,7 @@
 
 <meta name="author" content="Yixuan Qiu" />
 
-<meta name="date" content="2014-09-03" />
+<meta name="date" content="2014-09-08" />
 
 <title>Recommender system with recosystem package</title>
 
@@ -55,7 +55,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <div id="header">
 <h1 class="title">Recommender system with recosystem package</h1>
 <h4 class="author"><em>Yixuan Qiu</em></h4>
-<h4 class="date"><em>09/03/2014</em></h4>
+<h4 class="date"><em>09/08/2014</em></h4>
 </div>
 
 
@@ -177,10 +177,10 @@ testset = system.file(&quot;dat&quot;, &quot;smalltest.txt&quot;, package = &quo
 r = Reco()
 r$convert_train(trainset)</code></pre>
 <pre><code>## Converting...done.  0.00
-## binary file generated at /tmp/RtmpBOQlDT/smalltrain.txt.bin</code></pre>
+## binary file generated at /tmp/RtmpDOnBoc/smalltrain.txt.bin</code></pre>
 <pre class="r"><code>r$convert_test(testset)</code></pre>
 <pre><code>## Converting...done.  0.00
-## binary file generated at /tmp/RtmpBOQlDT/smalltest.txt.bin</code></pre>
+## binary file generated at /tmp/RtmpDOnBoc/smalltest.txt.bin</code></pre>
 <pre class="r"><code>r$train(opts = list(dim = 100, niter = 100,
                     cost.p = 0.001, cost.q = 0.001))</code></pre>
 <pre><code>## Warning: SSE is disabled.
@@ -227,7 +227,7 @@ r$convert_train(trainset)</code></pre>
 ## 38         0.04
 ## 39         0.04
 ## 40         0.04
-## 41         0.05
+## 41         0.04
 ## 42         0.05
 ## 43         0.05
 ## 44         0.05
@@ -237,8 +237,8 @@ r$convert_train(trainset)</code></pre>
 ## 48         0.05
 ## 49         0.05
 ## 50         0.05
-## 51         0.06
-## 52         0.06
+## 51         0.05
+## 52         0.05
 ## 53         0.06
 ## 54         0.06
 ## 55         0.06
@@ -247,48 +247,48 @@ r$convert_train(trainset)</code></pre>
 ## 58         0.06
 ## 59         0.06
 ## 60         0.06
-## 61         0.07
-## 62         0.07
+## 61         0.06
+## 62         0.06
 ## 63         0.07
 ## 64         0.07
 ## 65         0.07
 ## 66         0.07
 ## 67         0.07
 ## 68         0.07
-## 69         0.08
-## 70         0.08
-## 71         0.08
+## 69         0.07
+## 70         0.07
+## 71         0.07
 ## 72         0.08
 ## 73         0.08
 ## 74         0.08
 ## 75         0.08
 ## 76         0.08
-## 77         0.09
-## 78         0.09
-## 79         0.09
-## 80         0.09
-## 81         0.09
+## 77         0.08
+## 78         0.08
+## 79         0.08
+## 80         0.08
+## 81         0.08
 ## 82         0.09
 ## 83         0.09
 ## 84         0.09
 ## 85         0.09
 ## 86         0.09
 ## 87         0.09
-## 88         0.10
-## 89         0.10
-## 90         0.10
-## 91         0.10
-## 92         0.10
+## 88         0.09
+## 89         0.09
+## 90         0.09
+## 91         0.09
+## 92         0.09
 ## 93         0.10
 ## 94         0.10
 ## 95         0.10
 ## 96         0.10
 ## 97         0.10
-## 98         0.11
-## 99         0.11
-## 100        0.11
+## 98         0.10
+## 99         0.10
+## 100        0.10
 ## Writing model...done.  0.00
-## model file generated at /tmp/RtmpBOQlDT/smalltrain.txt.bin.model</code></pre>
+## model file generated at /tmp/RtmpDOnBoc/smalltrain.txt.bin.model</code></pre>
 <pre class="r"><code>print(r)</code></pre>
 <pre><code>## &gt;&gt;&gt; Training set &gt;&gt;&gt;
 ## 
@@ -317,9 +317,9 @@ r$convert_train(trainset)</code></pre>
 ## average         = 0.000000</code></pre>
 <pre class="r"><code>outfile = tempfile()
 r$predict(outfile)</code></pre>
-<pre><code>## Predicting...done.  0.01
+<pre><code>## Predicting...done.  0.00
 ## RMSE: 0.991
-## output file generated at /tmp/RtmpBOQlDT/file24b0527a464b</code></pre>
+## output file generated at /tmp/RtmpDOnBoc/file113641de17a6</code></pre>
 <pre class="r"><code>## Compare the first few true values of testing data
 ## with predicted ones
 # True values
@@ -332,16 +332,17 @@ print(scan(outfile, n = 10))</code></pre>
 </div>
 <div id="installation-issue" class="section level2">
 <h2>Installation issue</h2>
-<p><code>LIBMF</code> utilizes some compiler and CPU features that may be unavailable in some systems. Currently <code>recosystem</code> mainly supports UNIX-like operating systems, with experimental support for Windows. To build <code>recosystem</code> from source, one needs a C++ compiler that supports C++11 standard.</p>
-<p>Also, there are some flags in file <code>src/Makevars</code> that may have influential effect on performance. It’s strongly suggested to set proper flags according to your type of CPU before compiling the package, in order to achieve the best performance:</p>
+<p><code>LIBMF</code> utilizes some compiler and CPU features that may be unavailable in some systems. To build <code>recosystem</code> from source, one needs a C++ compiler that supports C++11 standard.</p>
+<p>Also, there are some flags in file <code>src/Makevars</code> that may have influential effect on performance. It is strongly suggested to set proper flags according to your type of CPU before compiling the package, in order to achieve the best performance:</p>
 <ol style="list-style-type: decimal">
 <li><p>If your CPU doesn’t support SSE3 (typically very old CPUs), set</p>
-<pre><code>PKG_CXXFLAGS = -DNOSSE</code></pre>
+<pre><code>PKG_CPPFLAGS = -DNOSSE</code></pre>
 in the <code>src/Makevars</code> file.</li>
 <li><p>If SSE3 is supported (<a href="http://en.wikipedia.org/wiki/SSE3">a list of supported CPUs</a>), set</p>
 <pre><code>PKG_CXXFLAGS = -msse3</code></pre></li>
 <li><p>If not only SSE3 is supported but also AVX (<a href="http://en.wikipedia.org/wiki/Advanced_Vector_Extensions">a list of supported CPUs</a>), set</p>
-<pre><code>PKG_CXXFLAGS = -DUSEAVX -mavx</code></pre></li>
+<pre><code>PKG_CXXFLAGS = -mavx
+PKG_CPPFLAGS = -DUSEAVX</code></pre></li>
 </ol>
 <p>After editing the <code>Makevars</code> file, run <code>R CMD INSTALL recosystem</code> on the package source directory to install <code>recosystem</code>.</p>
 <div class="references">
