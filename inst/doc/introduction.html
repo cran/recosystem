@@ -177,20 +177,20 @@ testset = system.file(&quot;dat&quot;, &quot;smalltest.txt&quot;, package = &quo
 r = Reco()
 r$convert_train(trainset)</code></pre>
 <pre><code>## Converting...done.  0.00
-## binary file generated at /tmp/RtmpDOnBoc/smalltrain.txt.bin</code></pre>
+## binary file generated at /tmp/Rtmp5g3cYe/smalltrain.txt.bin</code></pre>
 <pre class="r"><code>r$convert_test(testset)</code></pre>
 <pre><code>## Converting...done.  0.00
-## binary file generated at /tmp/RtmpDOnBoc/smalltest.txt.bin</code></pre>
+## binary file generated at /tmp/Rtmp5g3cYe/smalltest.txt.bin</code></pre>
 <pre class="r"><code>r$train(opts = list(dim = 100, niter = 100,
                     cost.p = 0.001, cost.q = 0.001))</code></pre>
 <pre><code>## Warning: SSE is disabled.
 ## Reading training data...done.  0.00
-## Initializing model...done.  0.01
+## Initializing model...done.  0.00
 ## iter       time
 ## 1          0.00
 ## 2          0.00
 ## 3          0.00
-## 4          0.00
+## 4          0.01
 ## 5          0.01
 ## 6          0.01
 ## 7          0.01
@@ -199,7 +199,7 @@ r$convert_train(trainset)</code></pre>
 ## 10         0.01
 ## 11         0.01
 ## 12         0.01
-## 13         0.01
+## 13         0.02
 ## 14         0.02
 ## 15         0.02
 ## 16         0.02
@@ -208,87 +208,87 @@ r$convert_train(trainset)</code></pre>
 ## 19         0.02
 ## 20         0.02
 ## 21         0.02
-## 22         0.02
+## 22         0.03
 ## 23         0.03
 ## 24         0.03
 ## 25         0.03
 ## 26         0.03
 ## 27         0.03
-## 28         0.03
-## 29         0.03
-## 30         0.03
-## 31         0.03
-## 32         0.03
-## 33         0.04
-## 34         0.04
-## 35         0.04
-## 36         0.04
-## 37         0.04
-## 38         0.04
-## 39         0.04
-## 40         0.04
-## 41         0.04
-## 42         0.05
-## 43         0.05
-## 44         0.05
-## 45         0.05
-## 46         0.05
-## 47         0.05
-## 48         0.05
-## 49         0.05
-## 50         0.05
-## 51         0.05
-## 52         0.05
-## 53         0.06
-## 54         0.06
-## 55         0.06
-## 56         0.06
-## 57         0.06
-## 58         0.06
-## 59         0.06
-## 60         0.06
-## 61         0.06
-## 62         0.06
-## 63         0.07
-## 64         0.07
-## 65         0.07
-## 66         0.07
-## 67         0.07
-## 68         0.07
-## 69         0.07
-## 70         0.07
-## 71         0.07
-## 72         0.08
-## 73         0.08
-## 74         0.08
-## 75         0.08
-## 76         0.08
-## 77         0.08
-## 78         0.08
-## 79         0.08
-## 80         0.08
-## 81         0.08
-## 82         0.09
-## 83         0.09
-## 84         0.09
-## 85         0.09
-## 86         0.09
-## 87         0.09
-## 88         0.09
-## 89         0.09
-## 90         0.09
-## 91         0.09
-## 92         0.09
-## 93         0.10
-## 94         0.10
-## 95         0.10
-## 96         0.10
-## 97         0.10
-## 98         0.10
-## 99         0.10
-## 100        0.10
+## 28         0.04
+## 29         0.04
+## 30         0.04
+## 31         0.05
+## 32         0.05
+## 33         0.05
+## 34         0.05
+## 35         0.06
+## 36         0.06
+## 37         0.06
+## 38         0.06
+## 39         0.06
+## 40         0.06
+## 41         0.06
+## 42         0.07
+## 43         0.07
+## 44         0.07
+## 45         0.07
+## 46         0.07
+## 47         0.07
+## 48         0.07
+## 49         0.07
+## 50         0.07
+## 51         0.08
+## 52         0.08
+## 53         0.08
+## 54         0.08
+## 55         0.08
+## 56         0.08
+## 57         0.08
+## 58         0.08
+## 59         0.08
+## 60         0.08
+## 61         0.09
+## 62         0.09
+## 63         0.09
+## 64         0.09
+## 65         0.09
+## 66         0.09
+## 67         0.09
+## 68         0.09
+## 69         0.09
+## 70         0.09
+## 71         0.09
+## 72         0.10
+## 73         0.10
+## 74         0.10
+## 75         0.10
+## 76         0.10
+## 77         0.10
+## 78         0.10
+## 79         0.10
+## 80         0.10
+## 81         0.10
+## 82         0.11
+## 83         0.11
+## 84         0.11
+## 85         0.11
+## 86         0.11
+## 87         0.11
+## 88         0.11
+## 89         0.11
+## 90         0.11
+## 91         0.12
+## 92         0.12
+## 93         0.12
+## 94         0.12
+## 95         0.12
+## 96         0.12
+## 97         0.12
+## 98         0.12
+## 99         0.12
+## 100        0.12
 ## Writing model...done.  0.00
-## model file generated at /tmp/RtmpDOnBoc/smalltrain.txt.bin.model</code></pre>
+## model file generated at /tmp/Rtmp5g3cYe/smalltrain.txt.bin.model</code></pre>
 <pre class="r"><code>print(r)</code></pre>
 <pre><code>## &gt;&gt;&gt; Training set &gt;&gt;&gt;
 ## 
@@ -317,9 +317,9 @@ r$convert_train(trainset)</code></pre>
 ## average         = 0.000000</code></pre>
 <pre class="r"><code>outfile = tempfile()
 r$predict(outfile)</code></pre>
-<pre><code>## Predicting...done.  0.00
-## RMSE: 0.991
-## output file generated at /tmp/RtmpDOnBoc/file113641de17a6</code></pre>
+<pre><code>## Predicting...done.  0.01
+## RMSE: 0.992
+## output file generated at /tmp/Rtmp5g3cYe/file131368bb343f</code></pre>
 <pre class="r"><code>## Compare the first few true values of testing data
 ## with predicted ones
 # True values
@@ -327,7 +327,7 @@ print(read.table(testset, header = FALSE, sep = &quot; &quot;, nrows = 10)$V3)</
 <pre><code>##  [1] 3 4 2 3 3 4 3 3 3 3</code></pre>
 <pre class="r"><code># Predicted values
 print(scan(outfile, n = 10))</code></pre>
-<pre><code>##  [1] 3.243 2.988 3.063 3.516 1.987 3.223 2.668 2.812 2.048 3.471</code></pre>
+<pre><code>##  [1] 3.283 3.005 3.047 3.509 2.003 3.234 2.708 2.780 2.018 3.441</code></pre>
 <p>Detailed help document for each function is available in topics <code>?recosystem::Reco</code>, <code>?recosystem::convert</code>, <code>?recosystem::train</code> and <code>?recosystem::predict</code>.</p>
 </div>
 <div id="installation-issue" class="section level2">

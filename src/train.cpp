@@ -18,7 +18,7 @@
 #endif
 
 #include <Rcpp.h>
-#include "pseudorand.h"
+#include "rand.h"
 
 #if defined NOSSE && defined USEAVX
 #error "NOSSE and USEAVX cannot be define simultaneously"
@@ -283,7 +283,7 @@ std::vector<int> gen_map(int const size, bool const shuffle)
     for(int i = 0; i < size; i++)
         map[i] = i;
     if(shuffle)
-        std::random_shuffle(map.begin(), map.end(), pseudo::pseudo_random);
+        std::random_shuffle(map.begin(), map.end(), Rand::rand_less_than);
     return map;
 }
 
@@ -304,12 +304,12 @@ Model generate_initial_model(Parameter const &param, int const nr_users,
 
     auto initialize = [&] (float *ptr, int const count)
     {
-        pseudo::srand48(0L);
+        Rcpp::RNGScope scp;
         for(int i = 0; i < count; i++)
         {
             int d = 0;
             for(; d < param.dim; d++, ptr++)
-                *ptr = 0.1*pseudo::drand48();
+                *ptr = 0.1* R::unif_rand();
             for(; d < dim_aligned; d++, ptr++)
                 *ptr = 0;
         }
@@ -635,7 +635,7 @@ int Scheduler::get_job()
             }
         }
     }
-    int const best_jid = candidates[pseudo::rand()%(int)candidates.size()];
+    int const best_jid = candidates[Rand::rand()%(int)candidates.size()];
     blocked_u[best_jid/nr_item_blocks] = 1;
     blocked_i[best_jid%nr_item_blocks] = 1;
     counts[best_jid]++;
@@ -1069,7 +1069,7 @@ void *sgd_wrapper(void *data)
 }
 #endif
 
-Model fpsgd(GriddedMatrix const &Tr, Matrix const &Va,
+Model fpsgd(GriddedMatrix const &Tr, Matrix const *Va,
             TrainOption const &option)
 {
     Timer timer;
@@ -1078,7 +1078,7 @@ Model fpsgd(GriddedMatrix const &Tr, Matrix const &Va,
                                          option.use_avg? Tr.avg : 0);
     timer.toc("done.");
 
-    Monitor monitor(Tr, &Va, &model, option.show_tr_rmse,
+    Monitor monitor(Tr, Va, &model, option.show_tr_rmse,
                     option.show_obj);
 
     Scheduler scheduler(option.nr_user_blocks, option.nr_item_blocks,
@@ -1386,7 +1386,7 @@ BEGIN_RCPP
         }
     }
 
-    Model model = fpsgd(*Tr, *Va, *option);
+    Model model = fpsgd(*Tr, Va.get(), *option);
 
     if(option->rand_shuffle)
         inversely_shuffle_model(model, user_map, item_map);
