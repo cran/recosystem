@@ -10,9 +10,9 @@
 
 <meta name="author" content="Yixuan Qiu" />
 
-<meta name="date" content="2015-02-07" />
+<meta name="date" content="2015-05-28" />
 
-<title>Recommender System with recosystem Package</title>
+<title>Recommender System with the recosystem Package</title>
 
 
 
@@ -43,7 +43,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </style>
 
 
-<link href="data:text/css,body%20%7B%0A%20%20background%2Dcolor%3A%20%23fff%3B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20max%2Dwidth%3A%20800px%3B%0A%20%20overflow%3A%20visible%3B%0A%20%20padding%2Dleft%3A%202em%3B%0A%20%20padding%2Dright%3A%202em%3B%0A%20%20font%2Dfamily%3A%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20font%2Dsize%3A%2014px%3B%0A%20%20line%2Dheight%3A%2020px%3B%0A%7D%0A%0A%23header%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A%0A%23TOC%20%7B%0A%20%20clear%3A%20both%3B%0A%20%20margin%3A%200%200%2010px%200%3B%0A%20%20padding%3A%204px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20border%2Dradius%3A%205px%3B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20font%2Dsize%3A%2013px%3B%0A%20%20line%2Dheight%3A%201%2E3%3B%0A%7D%0A%20%20%23TOC%20%2Etoctitle%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%20%20font%2Dsize%3A%2015px%3B%0A%20%20%20%20margin%2Dleft%3A%205px%3B%0A%20%20%7D%0A%0A%20%20%23TOC%20ul%20%7B%0A%20%20%20%20padding%2Dleft%3A%2040px%3B%0A%20%20%20%20margin%2Dleft%3A%20%2D1%2E5em%3B%0A%20%20%20%20margin%2Dtop%3A%205px%3B%0A%20%20%20%20margin%2Dbottom%3A%205px%3B%0A%20%20%7D%0A%20%20%23TOC%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dleft%3A%20%2D2em%3B%0A%20%20%7D%0A%20%20%23TOC%20li%20%7B%0A%20%20%20%20line%2Dheight%3A%2016px%3B%0A%20%20%7D%0A%0Atable%20%7B%0A%20%20margin%3A%20auto%3B%0A%20%20min%2Dwidth%3A%2040%25%3B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dcolor%3A%20%23DDDDDD%3B%0A%20%20border%2Dstyle%3A%20outset%3B%0A%20%20border%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%5Bsummary%3D%22R%20argblock%22%5D%20%7B%0A%20%20width%3A%20100%25%3B%0A%20%20border%3A%20none%3B%0A%7D%0Atable%20th%20%7B%0A%20%20border%2Dwidth%3A%202px%3B%0A%20%20padding%3A%205px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%20%20line%2Dheight%3A%2018px%3B%0A%20%20padding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0A%20%20border%2Dleft%2Dstyle%3A%20none%3B%0A%20%20border%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20tr%2Eodd%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%2E5em%200%3B%0A%7D%0A%0Ablockquote%20%7B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20padding%3A%2013px%3B%0A%20%20padding%2Dbottom%3A%201px%3B%0A%7D%0A%0Ahr%20%7B%0A%20%20border%2Dstyle%3A%20solid%3B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dtop%3A%201px%20solid%20%23777%3B%0A%20%20margin%3A%2028px%200%3B%0A%7D%0A%0Adl%20%7B%0A%20%20margin%2Dleft%3A%200%3B%0A%7D%0A%20%20dl%20dd%20%7B%0A%20%20%20%20margin%2Dbottom%3A%2013px%3B%0A%20%20%20%20margin%2Dleft%3A%2013px%3B%0A%20%20%7D%0A%20%20dl%20dt%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%7D%0A%0Aul%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%7D%0A%20%20ul%20li%20%7B%0A%20%20%20%20list%2Dstyle%3A%20circle%20outside%3B%0A%20%20%7D%0A%20%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dbottom%3A%200%3B%0A%20%20%7D%0A%0Apre%2C%20code%20%7B%0A%20%20background%2Dcolor%3A%20%23f5f5f5%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20color%3A%20%23333%3B%0A%7D%0Apre%20%7B%0A%20%20overflow%2Dx%3A%20auto%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20margin%3A%205px%200px%2010px%200px%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20background%2Dcolor%3A%20white%3B%0A%20%20border%3A%20%23f5f5f5%201px%20solid%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20code%20%7B%0A%20%20color%3A%20%23444%3B%0A%20%20background%2Dcolor%3A%20white%3B%0A%7D%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20monospace%3B%0A%20%20font%2Dsize%3A%2090%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0A%20%20padding%3A%202px%204px%3B%0A%20%20color%3A%20%23d14%3B%0A%20%20border%3A%201px%20solid%20%23e1e1e8%3B%0A%20%20white%2Dspace%3A%20inherit%3B%0A%7D%0Adiv%2Efigure%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0Atable%20%3E%20caption%2C%20div%2Efigure%20p%2Ecaption%20%7B%0A%20%20font%2Dstyle%3A%20italic%3B%0A%7D%0Atable%20%3E%20caption%20span%2C%20div%2Efigure%20p%2Ecaption%20span%20%7B%0A%20%20font%2Dstyle%3A%20normal%3B%0A%20%20font%2Dweight%3A%20bold%3B%0A%7D%0Ap%20%7B%0A%20%20margin%3A%200%200%2010px%3B%0A%7D%0Atable%20%7B%0A%20%20margin%3A%20auto%20auto%2010px%20auto%3B%0A%7D%0A%0Aimg%20%7B%0A%20%20background%2Dcolor%3A%20%23FFFFFF%3B%0A%20%20padding%3A%202px%3B%0A%20%20border%3A%201px%20solid%20%23DDDDDD%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20margin%3A%200%205px%3B%0A%20%20max%2Dwidth%3A%20100%25%3B%0A%7D%0A%0Ah1%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%20%20font%2Dsize%3A%2035px%3B%0A%20%20line%2Dheight%3A%2040px%3B%0A%7D%0A%0Ah2%20%7B%0A%20%20border%2Dbottom%3A%204px%20solid%20%23f5f5f5%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20padding%2Dbottom%3A%202px%3B%0A%20%20font%2Dsize%3A%20145%25%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20border%2Dbottom%3A%202px%20solid%20%23f5f5f5%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20font%2Dsize%3A%20120%25%3B%0A%7D%0A%0Ah4%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23f5f5f5%3B%0A%20%20margin%2Dleft%3A%208px%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Ah5%2C%20h6%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23ccc%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Aa%20%7B%0A%20%20color%3A%20%230033dd%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%236666ff%3B%20%7D%0A%20%20a%3Avisited%20%7B%0A%20%20%20%20color%3A%20%23800080%3B%20%7D%0A%20%20a%3Avisited%3Ahover%20%7B%0A%20%20%20%20color%3A%20%23BB00BB%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%0Adiv%2Er%2Dhelp%2Dpage%20%7B%0A%20%20background%2Dcolor%3A%20%23f9f9f9%3B%0A%20%20border%2Dbottom%3A%20%23ddd%201px%20solid%3B%0A%20%20margin%2Dbottom%3A%2010px%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Adiv%2Er%2Dhelp%2Dpage%3Ahover%20%7B%0A%20%20background%2Dcolor%3A%20%23f4f4f4%3B%0A%7D%0A%0A%2F%2A%20Class%20described%20in%20https%3A%2F%2Fbenjeffrey%2Ecom%2Fposts%2Fpandoc%2Dsyntax%2Dhighlighting%2Dcss%0A%20%20%20Colours%20from%20https%3A%2F%2Fgist%2Egithub%2Ecom%2Frobsimmons%2F1172277%20%2A%2F%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Keyword%20%2A%2F%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%2F%2A%20DataType%20%2A%2F%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%2F%2A%20DecVal%20%28decimal%20values%29%20%2A%2F%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20BaseN%20%2A%2F%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Float%20%2A%2F%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Char%20%2A%2F%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20String%20%2A%2F%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%2F%2A%20Comment%20%2A%2F%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%2F%2A%20OtherToken%20%2A%2F%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20AlertToken%20%2A%2F%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Function%20calls%20%2A%2F%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%2F%2A%20ErrorTok%20%2A%2F%0A%0A" rel="stylesheet" type="text/css" />
+<link href="data:text/css,body%20%7B%0A%20%20background%2Dcolor%3A%20%23fff%3B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20max%2Dwidth%3A%20800px%3B%0A%20%20overflow%3A%20visible%3B%0A%20%20padding%2Dleft%3A%202em%3B%0A%20%20padding%2Dright%3A%202em%3B%0A%20%20font%2Dfamily%3A%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20font%2Dsize%3A%2014px%3B%0A%20%20line%2Dheight%3A%2020px%3B%0A%7D%0A%0A%23header%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A%0A%23TOC%20%7B%0A%20%20clear%3A%20both%3B%0A%20%20margin%3A%200%200%2010px%200%3B%0A%20%20padding%3A%204px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20border%2Dradius%3A%205px%3B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20font%2Dsize%3A%2013px%3B%0A%20%20line%2Dheight%3A%201%2E3%3B%0A%7D%0A%20%20%23TOC%20%2Etoctitle%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%20%20font%2Dsize%3A%2015px%3B%0A%20%20%20%20margin%2Dleft%3A%205px%3B%0A%20%20%7D%0A%0A%20%20%23TOC%20ul%20%7B%0A%20%20%20%20padding%2Dleft%3A%2040px%3B%0A%20%20%20%20margin%2Dleft%3A%20%2D1%2E5em%3B%0A%20%20%20%20margin%2Dtop%3A%205px%3B%0A%20%20%20%20margin%2Dbottom%3A%205px%3B%0A%20%20%7D%0A%20%20%23TOC%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dleft%3A%20%2D2em%3B%0A%20%20%7D%0A%20%20%23TOC%20li%20%7B%0A%20%20%20%20line%2Dheight%3A%2016px%3B%0A%20%20%7D%0A%0Atable%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20margin%3A%20auto%3B%0A%20%20min%2Dwidth%3A%2040%25%3B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dcolor%3A%20%23DDDDDD%3B%0A%20%20border%2Dstyle%3A%20outset%3B%0A%20%20border%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%5Bsummary%3D%22R%20argblock%22%5D%20%7B%0A%20%20width%3A%20100%25%3B%0A%20%20border%3A%20none%3B%0A%7D%0Atable%3Anot%28%5Bclass%5D%29%20th%20%7B%0A%20%20border%2Dwidth%3A%202px%3B%0A%20%20padding%3A%205px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%7D%0Atable%3Anot%28%5Bclass%5D%29%20td%20%7B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%20%20line%2Dheight%3A%2018px%3B%0A%20%20padding%3A%205px%205px%3B%0A%7D%0Atable%3Anot%28%5Bclass%5D%29%2C%20table%3Anot%28%5Bclass%5D%29%20th%2C%20table%3Anot%28%5Bclass%5D%29%20td%20%7B%0A%20%20border%2Dleft%2Dstyle%3A%20none%3B%0A%20%20border%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%3Anot%28%5Bclass%5D%29%20tr%2Eodd%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%2E5em%200%3B%0A%7D%0A%0Ablockquote%20%7B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20padding%3A%2013px%3B%0A%20%20padding%2Dbottom%3A%201px%3B%0A%7D%0A%0Ahr%20%7B%0A%20%20border%2Dstyle%3A%20solid%3B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dtop%3A%201px%20solid%20%23777%3B%0A%20%20margin%3A%2028px%200%3B%0A%7D%0A%0Adl%20%7B%0A%20%20margin%2Dleft%3A%200%3B%0A%7D%0A%20%20dl%20dd%20%7B%0A%20%20%20%20margin%2Dbottom%3A%2013px%3B%0A%20%20%20%20margin%2Dleft%3A%2013px%3B%0A%20%20%7D%0A%20%20dl%20dt%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%7D%0A%0Aul%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%7D%0A%20%20ul%20li%20%7B%0A%20%20%20%20list%2Dstyle%3A%20circle%20outside%3B%0A%20%20%7D%0A%20%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dbottom%3A%200%3B%0A%20%20%7D%0A%0Apre%2C%20code%20%7B%0A%20%20background%2Dcolor%3A%20%23f5f5f5%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20color%3A%20%23333%3B%0A%7D%0Apre%20%7B%0A%20%20overflow%2Dx%3A%20auto%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20margin%3A%205px%200%2010px%200%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20background%2Dcolor%3A%20white%3B%0A%20%20border%3A%20%23f5f5f5%201px%20solid%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20code%20%7B%0A%20%20color%3A%20%23444%3B%0A%20%20background%2Dcolor%3A%20white%3B%0A%7D%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20monospace%3B%0A%20%20font%2Dsize%3A%2090%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0A%20%20padding%3A%202px%204px%3B%0A%20%20color%3A%20%23d14%3B%0A%20%20border%3A%201px%20solid%20%23e1e1e8%3B%0A%20%20white%2Dspace%3A%20inherit%3B%0A%7D%0Adiv%2Efigure%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0Atable%20%3E%20caption%2C%20div%2Efigure%20p%2Ecaption%20%7B%0A%20%20font%2Dstyle%3A%20italic%3B%0A%7D%0Atable%20%3E%20caption%20span%2C%20div%2Efigure%20p%2Ecaption%20span%20%7B%0A%20%20font%2Dstyle%3A%20normal%3B%0A%20%20font%2Dweight%3A%20bold%3B%0A%7D%0Ap%20%7B%0A%20%20margin%3A%200%200%2010px%3B%0A%7D%0Atable%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20margin%3A%20auto%20auto%2010px%20auto%3B%0A%7D%0A%0Aimg%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20background%2Dcolor%3A%20%23FFFFFF%3B%0A%20%20padding%3A%202px%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20margin%3A%200%205px%3B%0A%20%20max%2Dwidth%3A%20100%25%3B%0A%7D%0A%0Ah1%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%20%20font%2Dsize%3A%2035px%3B%0A%20%20line%2Dheight%3A%2040px%3B%0A%7D%0A%0Ah2%20%7B%0A%20%20border%2Dbottom%3A%204px%20solid%20%23f5f5f5%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20padding%2Dbottom%3A%202px%3B%0A%20%20font%2Dsize%3A%20145%25%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20border%2Dbottom%3A%202px%20solid%20%23f5f5f5%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20font%2Dsize%3A%20120%25%3B%0A%7D%0A%0Ah4%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23f5f5f5%3B%0A%20%20margin%2Dleft%3A%208px%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Ah5%2C%20h6%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23ccc%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Aa%20%7B%0A%20%20color%3A%20%230033dd%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%236666ff%3B%20%7D%0A%20%20a%3Avisited%20%7B%0A%20%20%20%20color%3A%20%23800080%3B%20%7D%0A%20%20a%3Avisited%3Ahover%20%7B%0A%20%20%20%20color%3A%20%23BB00BB%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%0Adiv%2Er%2Dhelp%2Dpage%20%7B%0A%20%20background%2Dcolor%3A%20%23f9f9f9%3B%0A%20%20border%2Dbottom%3A%20%23ddd%201px%20solid%3B%0A%20%20margin%2Dbottom%3A%2010px%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Adiv%2Er%2Dhelp%2Dpage%3Ahover%20%7B%0A%20%20background%2Dcolor%3A%20%23f4f4f4%3B%0A%7D%0A%0A%2F%2A%20Class%20described%20in%20https%3A%2F%2Fbenjeffrey%2Ecom%2Fposts%2Fpandoc%2Dsyntax%2Dhighlighting%2Dcss%0A%20%20%20Colours%20from%20https%3A%2F%2Fgist%2Egithub%2Ecom%2Frobsimmons%2F1172277%20%2A%2F%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Keyword%20%2A%2F%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%2F%2A%20DataType%20%2A%2F%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%2F%2A%20DecVal%20%28decimal%20values%29%20%2A%2F%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20BaseN%20%2A%2F%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Float%20%2A%2F%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Char%20%2A%2F%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20String%20%2A%2F%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%2F%2A%20Comment%20%2A%2F%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%2F%2A%20OtherToken%20%2A%2F%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20AlertToken%20%2A%2F%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Function%20calls%20%2A%2F%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%2F%2A%20ErrorTok%20%2A%2F%0A%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -52,23 +52,22 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 
 <div id="header">
-<h1 class="title">Recommender System with recosystem Package</h1>
+<h1 class="title">Recommender System with the recosystem Package</h1>
 <h4 class="author"><em>Yixuan Qiu</em></h4>
-<h4 class="date"><em>02/07/2015</em></h4>
+<h4 class="date"><em>05/28/2015</em></h4>
 </div>
 
 
 <!--
 %\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{Recommender system with recosystem package}
+%\VignetteIndexEntry{Recommender System with the recosystem Package}
 -->
-
 <div id="about-recosystem-package" class="section level2">
-<h2>About recosystem package</h2>
-<p><code>recosystem</code> is an R wrapper of the <code>LIBMF</code> library developed by Yu-Chin Juan, Yong Zhuang, Wei-Sheng Chin and Chih-Jen Lin (<a href="http://www.csie.ntu.edu.tw/~cjlin/libmf/">http://www.csie.ntu.edu.tw/~cjlin/libmf/</a>), an open source library for recommender system using marix factorization. <span class="citation">(Lin et al. 2014)</span></p>
+<h2>About recosystem Package</h2>
+<p><code>recosystem</code> is an R wrapper of the <code>LIBMF</code> library developed by Yu-Chin Juan, Yong Zhuang, Wei-Sheng Chin and Chih-Jen Lin (<a href="http://www.csie.ntu.edu.tw/~cjlin/libmf/" class="uri">http://www.csie.ntu.edu.tw/~cjlin/libmf/</a>), an open source library for recommender system using marix factorization. <span class="citation">(Lin et al. 2015)</span></p>
 </div>
 <div id="a-quick-view-of-recommender-system" class="section level2">
-<h2>A quick view of recommender system</h2>
+<h2>A Quick View of Recommender System</h2>
 <p>The main task of recommender system is to predict unknown entries in the rating matrix based on observed values, as is shown in the table below:</p>
 <table>
 <thead>
@@ -128,22 +127,20 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>A popular technique to solve the recommender system problem is the matrix factorization method. The idea is to approximate the whole rating matrix <span class="math">\(R_{m\times n}\)</span> by the product of two matrices of lower dimensions, <span class="math">\(P_{k\times m}\)</span> and <span class="math">\(Q_{k\times n}\)</span>, such that</p>
 <p><span class="math">\[R\approx P'Q\]</span></p>
 <p>Let <span class="math">\(p_u\)</span> be the <span class="math">\(u\)</span>-th column of <span class="math">\(P\)</span>, and <span class="math">\(q_v\)</span> be the <span class="math">\(v\)</span>-th column of <span class="math">\(Q\)</span>, then the rating given by user <span class="math">\(u\)</span> on item <span class="math">\(v\)</span> would be predicted as <span class="math">\(p'_u q_v\)</span>.</p>
-<p>A typical solution for <span class="math">\(P\)</span> and <span class="math">\(Q\)</span> is given by the following optimization problem <span class="citation">(Chin et al. 2014)</span>:</p>
-<p><span class="math">\[\min_{P,Q} \sum_{(u,v)\in R} ((r_{u,v}-p'_u q_v)^2+\lambda_P ||p_u||^2+\lambda_Q ||q_v||^2)\]</span></p>
-<p>where <span class="math">\((u,v)\)</span> are locations of observed entries in <span class="math">\(R\)</span>, <span class="math">\(r_{u,v}\)</span> is the observed rating, and <span class="math">\(\lambda_P,\lambda_Q\)</span> are penalty parameters to avoid overfitting.</p>
-<p>The <code>LIBMF</code> library which <code>recosystem</code> is based on generalizes the formula above a little further, resulting in the following more general but more complicated optimiaztion problem <span class="citation">(Chin et al. 2014)</span>:</p>
-<p><span class="math">\[\min_{P,Q,a,b} \sum_{(u,v)\in R} ((r_{u,v}-p'_u q_v-a_u-b_v-avg)^2+\lambda_P ||p_u||^2+\lambda_Q ||q_v||^2+\lambda_a||a||^2+\lambda_b||b||^2)\]</span></p>
-<p>The added vectors <span class="math">\(a\)</span> and <span class="math">\(b\)</span> are called user bias vector and item bias vector respectively, with <span class="math">\(\lambda_a\)</span> and <span class="math">\(\lambda_b\)</span> being their corresponding penalty parameters. <span class="math">\(avg\)</span> is the average rating in training data, which has an effect of centering the data first.</p>
+<p>A typical solution for <span class="math">\(P\)</span> and <span class="math">\(Q\)</span> is given by the following optimization problem <span class="citation">(Chin et al. 2015a; Chin et al. 2015b)</span>:</p>
+<p><span class="math">\[\min_{P,Q} \sum_{(u,v)\in R} \left((r_{u,v}-p'_u q_v)^2+\lambda_P ||p_u||^2+\lambda_Q ||q_v||^2\right)\]</span></p>
+<p>where <span class="math">\((u,v)\)</span> are locations of observed entries in <span class="math">\(R\)</span>, <span class="math">\(r_{u,v}\)</span> is the observed rating, and <span class="math">\(\lambda_P,\lambda_Q\)</span> are penalty parameters to avoid overfitting. Usually we take <span class="math">\(\lambda_P\)</span> and <span class="math">\(\lambda_Q\)</span> to be the same, i.e., equal to a common value <span class="math">\(\lambda\)</span>.</p>
 </div>
-<div id="features-of-libmf-and-recosystem" class="section level2">
-<h2>Features of LIBMF and recosystem</h2>
-<p><code>LIBMF</code> itself is a parallelized library, meaning that users can take advantage of multicore CPUs to speed up the computation. It also utilizes some advanced CPU features to further improve the performance. <span class="citation">(Lin et al. 2014)</span></p>
-<p><code>recosystem</code> is a complete wrapper of <code>LIBMF</code>, hence the features of <code>LIBMF</code> are all included in <code>recosystem</code>. Also, unlike most other R packages for statistical modeling which store the whole dataset into memory, <code>LIBMF</code> (and hence <code>recosystem</code>) is much hard-disk-based. The dataset is not loaded into memory at one time, but rather converted into a temporary binary file. Similarly, the constructed model which contains information for prediction is stored in the hard disk. Finally, prediction result is also not in memory but written into a file. That is to say, <code>recosystem</code> will have a comparatively small memory usage.</p>
+<div id="highlights-of-libmf-and-recosystem" class="section level2">
+<h2>Highlights of LIBMF and recosystem</h2>
+<p><code>LIBMF</code> itself is a parallelized library, meaning that users can take advantage of multicore CPUs to speed up the computation. It also utilizes some advanced CPU features to further improve the performance. <span class="citation">(Lin et al. 2015)</span></p>
+<p><code>recosystem</code> is a wrapper of <code>LIBMF</code>, hence the features of <code>LIBMF</code> are all included in <code>recosystem</code>. Also, unlike most other R packages for statistical modeling which store the whole dataset and model object in memory, <code>LIBMF</code> (and hence <code>recosystem</code>) is much hard-disk-based, for instance the constructed model which contains information for prediction can be stored in the hard disk, and prediction result can also be directly written into a file rather than kept in memory. That is to say, <code>recosystem</code> will have a comparatively small memory usage.</p>
 </div>
 <div id="data-format" class="section level2">
-<h2>Data format</h2>
-<p>The data files, both for training and testing, need to be arranged in sparse matrix triplet form, i.e., each line in the file contains three numbers</p>
+<h2>Data Format</h2>
+<p>The data file for training set needs to be arranged in sparse matrix triplet form, i.e., each line in the file contains three numbers</p>
 <pre><code>user_id item_id rating</code></pre>
+<p>Testing data file is similar to training data, but since the ratings in testing data are usually unknown, the <code>rating</code> entry in testing data file can be omitted, or can be replaced by any placeholder such as <code>0</code> or <code>?</code>.</p>
 <p>Be careful with the convention that <code>user_id</code> and <code>item_id</code> start from 0, so the training data file for the example in the beginning will look like</p>
 <pre><code>0 0 2
 0 1 3
@@ -153,172 +150,83 @@ code > span.er { color: #ff0000; font-weight: bold; }
 2 1 2
 ...</code></pre>
 <p>And testing data file is</p>
-<pre><code>0 2 0
-1 0 0
-2 2 0
+<pre><code>0 2
+1 0
+2 2
 ...</code></pre>
-<p>Since ratings for testing data are unknown, we put zeros as placeholders. However if their values are really given, the testing data will serve as a validation set on which RMSE of prediction can be calculated.</p>
+<p>Since ratings for testing data are unknown, here we simply omit the third entry. However if their values are really given, the testing data will serve as a validation set on which RMSE of prediction can be calculated.</p>
+<p>Example data files are contained in the <code>recosystem/dat</code> (or <code>recosystem/inst/dat</code>, for source package) directory.</p>
 </div>
 <div id="usage-of-recosystem" class="section level2">
 <h2>Usage of recosystem</h2>
-<p>The usage of <code>recosystem</code> is quite simple, mainly consisting of four steps:</p>
+<p>The usage of <code>recosystem</code> is quite simple, mainly consisting of the following steps:</p>
 <ol style="list-style-type: decimal">
-<li>Create a model object by calling <code>Reco()</code>.</li>
-<li>Call methods <code>convert_train()</code> and <code>convert_test()</code> to convert data files in text mode into binary form.</li>
-<li>Train the model by calling <code>train()</code> method. A number of parameters can be set inside the function.</li>
-<li>Use the <code>predict()</code> method to compute predictions and write results into hard disk.</li>
+<li>Create a model object (a Reference Class object in R) by calling <code>Reco()</code>.</li>
+<li>(Optionally) call the <code>$tune()</code> method to select best tuning parameters along a set of candidate values.</li>
+<li>Train the model by calling the <code>$train()</code> method. A number of parameters can be set inside the function, possibly coming from the result of <code>$tune()</code>.</li>
+<li>(Optionally) output the model, i.e. write the factorized <span class="math">\(P\)</span> and <span class="math">\(Q\)</span> matrices info files.</li>
+<li>Use the <code>$predict()</code> method to compute predictions and write results into a file.</li>
 </ol>
 <p>Below is an example on some simulated data:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(recosystem)
-<span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># this is a randomized algorithm</span>
+<span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># This is a randomized algorithm</span>
 trainset =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;dat&quot;</span>, <span class="st">&quot;smalltrain.txt&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;recosystem&quot;</span>)
 testset =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;dat&quot;</span>, <span class="st">&quot;smalltest.txt&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;recosystem&quot;</span>)
 r =<span class="st"> </span><span class="kw">Reco</span>()
-r$<span class="kw">convert_train</span>(trainset)</code></pre>
-<pre><code>## Converting...done.  0.00
-## binary file generated at /tmp/Rtmps9JWFS/smalltrain.txt.bin</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">r$<span class="kw">convert_test</span>(testset)</code></pre>
-<pre><code>## Converting...done.  0.00
-## binary file generated at /tmp/Rtmps9JWFS/smalltest.txt.bin</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">r$<span class="kw">train</span>(<span class="dt">opts =</span> <span class="kw">list</span>(<span class="dt">dim =</span> <span class="dv">100</span>, <span class="dt">niter =</span> <span class="dv">100</span>,
-                    <span class="dt">cost.p =</span> <span class="fl">0.001</span>, <span class="dt">cost.q =</span> <span class="fl">0.001</span>))</code></pre>
-<pre><code>## Warning: SSE is disabled.
-## Reading training data...done.  0.00
-## Initializing model...done.  0.00
-## iter       time
-## 1          0.00
-## 2          0.00
-## 3          0.00
-## 4          0.00
-## 5          0.00
-## 6          0.01
-## 7          0.01
-## 8          0.01
-## 9          0.01
-## 10         0.01
-## 11         0.01
-## 12         0.01
-## 13         0.01
-## 14         0.01
-## 15         0.01
-## 16         0.02
-## 17         0.02
-## 18         0.02
-## 19         0.02
-## 20         0.02
-## 21         0.02
-## 22         0.02
-## 23         0.02
-## 24         0.02
-## 25         0.03
-## 26         0.03
-## 27         0.03
-## 28         0.03
-## 29         0.03
-## 30         0.03
-## 31         0.03
-## 32         0.03
-## 33         0.03
-## 34         0.03
-## 35         0.04
-## 36         0.04
-## 37         0.04
-## 38         0.04
-## 39         0.04
-## 40         0.04
-## 41         0.04
-## 42         0.04
-## 43         0.04
-## 44         0.04
-## 45         0.05
-## 46         0.05
-## 47         0.05
-## 48         0.05
-## 49         0.05
-## 50         0.05
-## 51         0.05
-## 52         0.05
-## 53         0.05
-## 54         0.05
-## 55         0.05
-## 56         0.06
-## 57         0.06
-## 58         0.06
-## 59         0.06
-## 60         0.06
-## 61         0.06
-## 62         0.06
-## 63         0.06
-## 64         0.06
-## 65         0.06
-## 66         0.07
-## 67         0.07
-## 68         0.07
-## 69         0.07
-## 70         0.07
-## 71         0.07
-## 72         0.07
-## 73         0.07
-## 74         0.07
-## 75         0.08
-## 76         0.08
-## 77         0.08
-## 78         0.08
-## 79         0.08
-## 80         0.08
-## 81         0.08
-## 82         0.08
-## 83         0.08
-## 84         0.08
-## 85         0.09
-## 86         0.09
-## 87         0.09
-## 88         0.09
-## 89         0.09
-## 90         0.09
-## 91         0.09
-## 92         0.09
-## 93         0.09
-## 94         0.09
-## 95         0.09
-## 96         0.10
-## 97         0.10
-## 98         0.10
-## 99         0.10
-## 100        0.10
-## Writing model...done.  0.00
-## model file generated at /tmp/Rtmps9JWFS/smalltrain.txt.bin.model</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(r)</code></pre>
-<pre><code>## [=== Training set ===]
+opts =<span class="st"> </span>r$<span class="kw">tune</span>(trainset, <span class="dt">opts =</span> <span class="kw">list</span>(<span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>), <span class="dt">lrate =</span> <span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.2</span>),
+                                    <span class="dt">nthread =</span> <span class="dv">1</span>, <span class="dt">niter =</span> <span class="dv">10</span>))
+opts</code></pre>
+<pre><code>## $min
+## $min$dim
+## [1] 10
 ## 
-## number of users   = 1000
-## number of items   = 1000
-## number of ratings = 10000
-## average           = 3.007000
+## $min$cost
+## [1] 0.1
 ## 
-## [=== Testing set ===]
+## $min$lrate
+## [1] 0.1
 ## 
-## number of users   = 1000
-## number of items   = 1000
-## number of ratings = 10000
-## average           = 3.005600
 ## 
-## [=== Model ===]
-## 
-## number of users = 1000
-## number of items = 1000
-## dimensions      = 100
-## lambda p        = 0.001000
-## lambda q        = 0.001000
-## lambda ub       = -1.000000
-## lambda ib       = -1.000000
-## gamma           = 0.001000
-## average         = 0.000000</code></pre>
+## $res
+##    dim cost lrate      rmse
+## 1   10 0.01   0.1 1.0019376
+## 2   20 0.01   0.1 1.0211937
+## 3   30 0.01   0.1 0.9925157
+## 4   10 0.10   0.1 0.9689426
+## 5   20 0.10   0.1 0.9946385
+## 6   30 0.10   0.1 0.9834870
+## 7   10 0.01   0.2 1.1032429
+## 8   20 0.01   0.2 1.0500873
+## 9   30 0.01   0.2 1.0128726
+## 10  10 0.10   0.2 1.0360415
+## 11  20 0.10   0.2 1.0211815
+## 12  30 0.10   0.2 1.0008837</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">r$<span class="kw">train</span>(trainset, <span class="dt">opts =</span> <span class="kw">c</span>(opts$min, <span class="dt">nthread =</span> <span class="dv">1</span>, <span class="dt">niter =</span> <span class="dv">20</span>))</code></pre>
+<pre><code>## iter   tr_rmse          obj
+##    0    2.1112   4.9318e+04
+##    1    0.9777   1.5343e+04
+##    2    0.8347   1.2890e+04
+##    3    0.8049   1.2445e+04
+##    4    0.7886   1.2224e+04
+##    5    0.7750   1.2043e+04
+##    6    0.7613   1.1877e+04
+##    7    0.7469   1.1728e+04
+##    8    0.7289   1.1522e+04
+##    9    0.7114   1.1350e+04
+##   10    0.6920   1.1159e+04
+##   11    0.6731   1.0973e+04
+##   12    0.6557   1.0819e+04
+##   13    0.6394   1.0678e+04
+##   14    0.6252   1.0571e+04
+##   15    0.6111   1.0448e+04
+##   16    0.6001   1.0364e+04
+##   17    0.5893   1.0278e+04
+##   18    0.5802   1.0212e+04
+##   19    0.5717   1.0148e+04
+## real tr_rmse = 0.5356</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">outfile =<span class="st"> </span><span class="kw">tempfile</span>()
-r$<span class="kw">predict</span>(outfile)</code></pre>
-<pre><code>## Predicting...done.  0.00
-## RMSE: 0.992
-## output file generated at /tmp/Rtmps9JWFS/file1e67e1013b5</code></pre>
+r$<span class="kw">predict</span>(testset, outfile)</code></pre>
+<pre><code>## prediction output generated at /tmp/RtmpSmreiy/fileb9b3a0e8951</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">## Compare the first few true values of testing data
 ## with predicted ones
 <span class="co"># True values</span>
@@ -326,29 +234,29 @@ r$<span class="kw">predict</span>(outfile)</code></pre>
 <pre><code>##  [1] 3 4 2 3 3 4 3 3 3 3</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Predicted values</span>
 <span class="kw">print</span>(<span class="kw">scan</span>(outfile, <span class="dt">n =</span> <span class="dv">10</span>))</code></pre>
-<pre><code>##  [1] 3.283023 3.005262 3.046829 3.509161 2.003004 3.234289 2.708250
-##  [8] 2.779694 2.017818 3.440616</code></pre>
-<p>Detailed help document for each function is available in topics <code>?recosystem::Reco</code>, <code>?recosystem::convert</code>, <code>?recosystem::train</code> and <code>?recosystem::predict</code>.</p>
+<pre><code>##  [1] 4.18981 2.98077 2.82748 3.69854 2.59907 2.94004 2.91219 3.03800
+##  [9] 2.25076 3.48538</code></pre>
+<p>Detailed help document for each function is available in topics <code>?recosystem::Reco</code>, <code>?recosystem::tune</code>, <code>?recosystem::train</code>, <code>?recosystem::output</code> and <code>?recosystem::predict</code>.</p>
 </div>
 <div id="installation-issue" class="section level2">
-<h2>Installation issue</h2>
+<h2>Installation Issue</h2>
 <p><code>LIBMF</code> utilizes some compiler and CPU features that may be unavailable in some systems. To build <code>recosystem</code> from source, one needs a C++ compiler that supports C++11 standard.</p>
-<p>Also, there are some flags in file <code>src/Makevars</code> that may have influential effect on performance. It is strongly suggested to set proper flags according to your type of CPU before compiling the package, in order to achieve the best performance:</p>
+<p>Also, there are some flags in file <code>src/Makevars</code> (<code>src/Makevars.win</code> for Windows system) that may have influential effect on performance. It is strongly suggested to set proper flags according to your type of CPU before compiling the package, in order to achieve the best performance:</p>
 <ol style="list-style-type: decimal">
-<li><p>If your CPU doesn’t support SSE3 (typically very old CPUs), set</p>
-<pre><code>PKG_CPPFLAGS = -DNOSSE</code></pre>
-in the <code>src/Makevars</code> file.</li>
-<li><p>If SSE3 is supported (<a href="http://en.wikipedia.org/wiki/SSE3">a list of supported CPUs</a>), set</p>
-<pre><code>PKG_CXXFLAGS = -msse3</code></pre></li>
-<li><p>If not only SSE3 is supported but also AVX (<a href="http://en.wikipedia.org/wiki/Advanced_Vector_Extensions">a list of supported CPUs</a>), set</p>
-<pre><code>PKG_CXXFLAGS = -mavx
-PKG_CPPFLAGS = -DUSEAVX</code></pre></li>
+<li>The default <code>Makevars</code> provides generic options that should apply to most CPUs.</li>
+<li><p>If your CPU supports SSE3 (<a href="http://en.wikipedia.org/wiki/SSE3">a list of supported CPUs</a>), add</p>
+<pre><code>PKG_CPPFLAGS += -DUSESSE
+PKG_CXXFLAGS += -msse3</code></pre></li>
+<li><p>If not only SSE3 is supported but also AVX (<a href="http://en.wikipedia.org/wiki/Advanced_Vector_Extensions">a list of supported CPUs</a>), add</p>
+<pre><code>PKG_CPPFLAGS += -DUSEAVX
+PKG_CXXFLAGS += -mavx</code></pre></li>
 </ol>
 <p>After editing the <code>Makevars</code> file, run <code>R CMD INSTALL recosystem</code> on the package source directory to install <code>recosystem</code>.</p>
 <div class="references">
 <h2>References</h2>
-<p>Chin, Wei-Sheng, Yong Zhuang, Yu-Chin Juan, and Chih-Jen Lin. 2014. “A Fast Parallel Stochastic Gradient Method for Matrix Factorization in Shared Memory Systems.” <em>Technical Report</em>. <a href="http://www.csie.ntu.edu.tw/~cjlin/papers/libmf/libmf_journal.pdf">http://www.csie.ntu.edu.tw/~cjlin/papers/libmf/libmf_journal.pdf</a>.</p>
-<p>Lin, Chih-Jen, Yu-Chin Juan, Yong Zhuang, and Wei-Sheng Chin. 2014. “LIBMF: A Matrix-Factorization Library for Recommender Systems.” <a href="http://www.csie.ntu.edu.tw/~cjlin/libmf/">http://www.csie.ntu.edu.tw/~cjlin/libmf/</a>.</p>
+<p>Chin, Wei-Sheng, Yong Zhuang, Yu-Chin Juan, and Chih-Jen Lin. 2015a. “A Fast Parallel Stochastic Gradient Method for Matrix Factorization in Shared Memory Systems.” <em>ACM TIST</em>. <a href="http://www.csie.ntu.edu.tw/~cjlin/papers/libmf/libmf_journal.pdf" class="uri">http://www.csie.ntu.edu.tw/~cjlin/papers/libmf/libmf_journal.pdf</a>.</p>
+<p>———. 2015b. “A Learning-Rate Schedule for Stochastic Gradient Methods to Matrix Factorization.” <em>PAKDD</em>. <a href="http://www.csie.ntu.edu.tw/~cjlin/papers/libmf/mf_adaptive_pakdd.pdf" class="uri">http://www.csie.ntu.edu.tw/~cjlin/papers/libmf/mf_adaptive_pakdd.pdf</a>.</p>
+<p>Lin, Chih-Jen, Yu-Chin Juan, Yong Zhuang, and Wei-Sheng Chin. 2015. “LIBMF: A Matrix-Factorization Library for Recommender Systems.” <a href="http://www.csie.ntu.edu.tw/~cjlin/libmf/" class="uri">http://www.csie.ntu.edu.tw/~cjlin/libmf/</a>.</p>
 </div>
 </div>
 

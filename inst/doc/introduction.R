@@ -1,16 +1,15 @@
 ## ------------------------------------------------------------------------
 library(recosystem)
-set.seed(123) # this is a randomized algorithm
+set.seed(123) # This is a randomized algorithm
 trainset = system.file("dat", "smalltrain.txt", package = "recosystem")
 testset = system.file("dat", "smalltest.txt", package = "recosystem")
 r = Reco()
-r$convert_train(trainset)
-r$convert_test(testset)
-r$train(opts = list(dim = 100, niter = 100,
-                    cost.p = 0.001, cost.q = 0.001))
-print(r)
+opts = r$tune(trainset, opts = list(dim = c(10, 20, 30), lrate = c(0.1, 0.2),
+                                    nthread = 1, niter = 10))
+opts
+r$train(trainset, opts = c(opts$min, nthread = 1, niter = 20))
 outfile = tempfile()
-r$predict(outfile)
+r$predict(testset, outfile)
 
 ## Compare the first few true values of testing data
 ## with predicted ones
