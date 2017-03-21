@@ -11,7 +11,7 @@
   `data_file()`, `data_memory()`, `out_file()`, `out_memory()`, and
   `out_nothing()`. See section **Data Input and Output** below.
 - As a result, a number of arguments in functions `$tune()`, `$train()`,
-  `$export()`, and `$predict()` now should be objects returned by these
+  `$output()`, and `$predict()` now should be objects returned by these
   input/output functions.
 
 ## Recommender System with the recosystem Package
@@ -21,7 +21,7 @@
 `recosystem` is an R wrapper of the `LIBMF` library developed by
 Yu-Chin Juan, Wei-Sheng Chin, Yong Zhuang, Bo-Wen Yuan, Meng-Yuan Yang,
 and Chih-Jen Lin (http://www.csie.ntu.edu.tw/~cjlin/libmf/),
-an open source library for recommender system using parallel marix
+an open source library for recommender system using parallel matrix
 factorization.
 
 ### Highlights of LIBMF and recosystem
@@ -151,7 +151,7 @@ along a set of candidate values.
 can be set inside the function, possibly coming from the result of `$tune()`.
 4. (Optionally) export the model via `$output()`, i.e. write the factorization matrices
 `P` and `Q` into files or return them as R objects.
-5. Use the `$predict()` method to compute predicted valeus.
+5. Use the `$predict()` method to compute predicted values.
 
 Below is an example on some simulated data:
 
@@ -187,12 +187,12 @@ $min$costq_l2
 $min$lrate
 [1] 0.1
 
-$min$rmse
+$min$loss_fun
 [1] 0.9804937
 
 
 $res
-   dim costp_l1 costp_l2 costq_l1 costq_l2 lrate      rmse
+   dim costp_l1 costp_l2 costq_l1 costq_l2 lrate  loss_fun
 1   10        0     0.01        0     0.01   0.1 0.9996368
 2   20        0     0.01        0     0.01   0.1 1.0040111
 3   30        0     0.01        0     0.01   0.1 0.9967101
@@ -261,7 +261,7 @@ head(pred_rvec, 10)
 
 Detailed help document for each function is available in topics
 `?recosystem::Reco`, `?recosystem::tune`, `?recosystem::train`,
-`?recosystem::export` and `?recosystem::predict`.
+`?recosystem::output` and `?recosystem::predict`.
 
 ### Performance Improvement with Extra Installation Options
 
