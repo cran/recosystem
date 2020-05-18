@@ -1,4 +1,4 @@
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(recosystem)
 set.seed(123) # This is a randomized algorithm
 train_set = data_file(system.file("dat", "smalltrain.txt", package = "recosystem"))
