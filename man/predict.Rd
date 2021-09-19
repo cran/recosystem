@@ -6,9 +6,10 @@
 \arguments{
 \item{r}{Object returned by \code{\link{Reco}()}.}
 
-\item{train_data}{An object of class "DataSource" that describes the source
+\item{test_data}{An object of class "DataSource" that describes the source
 of testing data, typically returned by function
-\code{\link{data_file}()} or \code{\link{data_memory}()}.}
+ \code{\link{data_file}()}, \code{\link{data_memory}()},
+ or \code{\link{data_matrix}()}.}
 
 \item{out_pred}{An object of class \code{Output} that specifies the
 output format of prediction, typically returned by function
@@ -40,7 +41,7 @@ test_file = data_file(system.file("dat", "smalltest.txt", package = "recosystem"
 r = Reco()
 set.seed(123) # This is a randomized algorithm
 opts_tune = r$tune(train_file)$min
-r$train(train_file, opts = opts_tune)
+r$train(train_file, out_model = NULL, opts = opts_tune)
 
 ## Write predicted values into file
 out_pred = out_file(tempfile())
@@ -51,12 +52,23 @@ pred = r$predict(test_file, out_memory())
 
 ## If testing data are stored in memory
 test_df = read.table(test_file@source, sep = " ", header = FALSE)
-pred2 = r$predict(data_memory(test_df[, 1], test_df[, 2]), out_memory())
+test_data = data_memory(test_df[, 1], test_df[, 2])
+pred2 = r$predict(test_data, out_memory())
 
 ## Compare results
 print(scan(out_pred@dest, n = 10))
 head(pred, 10)
 head(pred2, 10)
+
+## If testing data are stored as a sparse matrix
+if(require(Matrix))
+{
+    mat = Matrix::sparseMatrix(i = test_df[, 1], j = test_df[, 2], x = -1,
+                               repr = "T", index1 = FALSE)
+    test_data = data_matrix(mat)
+    pred3 = r$predict(test_data, out_memory())
+    print(head(pred3, 10))
+}
 }
 
 }

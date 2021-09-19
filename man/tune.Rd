@@ -8,7 +8,8 @@
 
 \item{train_data}{An object of class "DataSource" that describes the source
 of training data, typically returned by function
-\code{\link{data_file}()} or \code{\link{data_memory}()}.}
+\code{\link{data_file}()}, \code{\link{data_memory}()},
+or \code{\link{data_matrix}()}.}
 
 \item{opts}{A number of candidate tuning parameter values and extra options in the
 model tuning procedure. See section \strong{Parameters and Options}

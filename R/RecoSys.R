@@ -3,10 +3,10 @@ RecoSys = setRefClass("RecoSys",
                                     train_pars = "list"))
 
 #' Constructing a Recommender System Object
-#' 
+#'
 #' This function simply returns an object of class "\code{RecoSys}"
 #' that can be used to construct recommender model and conduct prediction.
-#' 
+#'
 #' @return \code{Reco()} returns an object of class "\code{RecoSys}"
 #' equipped with methods
 #' \code{$\link{train}()}, \code{$\link{tune}()}, \code{$\link{output}()}
@@ -19,7 +19,7 @@ RecoSys = setRefClass("RecoSys",
 #' @references W.-S. Chin, Y. Zhuang, Y.-C. Juan, and C.-J. Lin.
 #' A Fast Parallel Stochastic Gradient Method for Matrix Factorization in Shared Memory Systems.
 #' ACM TIST, 2015.
-#' 
+#'
 #' W.-S. Chin, Y. Zhuang, Y.-C. Juan, and C.-J. Lin.
 #' A Learning-rate Schedule for Stochastic Gradient Methods to Matrix Factorization.
 #' PAKDD, 2015.
@@ -27,7 +27,7 @@ RecoSys = setRefClass("RecoSys",
 #' W.-S. Chin, B.-W. Yuan, M.-Y. Yang, Y. Zhuang, Y.-C. Juan, and C.-J. Lin.
 #' LIBMF: A Library for Parallel Matrix Factorization in Shared-memory Systems.
 #' Technical report, 2015.
-#' 
+#'
 #' @export
 #' @keywords models
 Reco = function()
@@ -38,10 +38,10 @@ Reco = function()
 
 
 #' Tuning Model Parameters
-#' 
+#'
 #' @description This method is a member function of class "\code{RecoSys}"
 #' that uses cross validation to tune the model parameters.
-#' 
+#'
 #' The common usage of this method is
 #' \preformatted{r = Reco()
 #' r$tune(train_data, opts = list(dim      = c(10L, 20L),
@@ -51,19 +51,20 @@ Reco = function()
 #'                                costq_l2 = c(0.01, 0.1),
 #'                                lrate    = c(0.01, 0.1))
 #' )}
-#' 
+#'
 #' @name tune
-#' 
+#'
 #' @param r Object returned by \code{\link{Reco}}().
 #' @param train_data An object of class "DataSource" that describes the source
 #'                   of training data, typically returned by function
-#'                   \code{\link{data_file}()} or \code{\link{data_memory}()}.
+#'                   \code{\link{data_file}()}, \code{\link{data_memory}()},
+#'                   or \code{\link{data_matrix}()}.
 #' @param opts A number of candidate tuning parameter values and extra options in the
 #'             model tuning procedure. See section \strong{Parameters and Options}
 #'             for details.
-#' 
+#'
 #' @return A list with two components:
-#' 
+#'
 #' \describe{
 #'   \item{\code{min}}{Parameter values with minimum cross validated loss.
 #'                     This is a list that can be passed to the
@@ -72,7 +73,7 @@ Reco = function()
 #'                     values of tuning parameters, and one column showing the
 #'                     loss function value associated with each combination.}
 #' }
-#'             
+#'
 #' @section Parameters and Options:
 #' The \code{opts} argument should be a list that provides the candidate values
 #' of tuning parameters and some other options. For tuning parameters (\code{dim},
@@ -81,7 +82,7 @@ Reco = function()
 #' the model will be evaluated on each combination of the candidate values.
 #' For other non-tuning options, users should give a single value. If a parameter
 #' or option is not set by the user, the program will use a default one.
-#' 
+#'
 #' See below for the list of available parameters and options:
 #'
 #' \describe{
@@ -119,7 +120,7 @@ Reco = function()
 #'                       \code{FALSE}.}
 #' \item{\code{progress}}{Logical, whether to show a progress bar. Default is \code{TRUE}.}
 #' }
-#' 
+#'
 #' @examples \dontrun{
 #' train_set = system.file("dat", "smalltrain.txt", package = "recosystem")
 #' train_src = data_file(train_set)
@@ -133,13 +134,13 @@ Reco = function()
 #' )
 #' r$train(train_src, opts = res$min)
 #' }
-#' 
+#'
 #' @author Yixuan Qiu <\url{https://statr.me}>
 #' @seealso \code{$\link{train}()}
 #' @references W.-S. Chin, Y. Zhuang, Y.-C. Juan, and C.-J. Lin.
 #' A Fast Parallel Stochastic Gradient Method for Matrix Factorization in Shared Memory Systems.
 #' ACM TIST, 2015.
-#' 
+#'
 #' W.-S. Chin, Y. Zhuang, Y.-C. Juan, and C.-J. Lin.
 #' A Learning-rate Schedule for Stochastic Gradient Methods to Matrix Factorization.
 #' PAKDD, 2015.
@@ -167,10 +168,10 @@ use data_file(path) for argument 'train_data' instead")
         if("cost" %in% names(opts))
             stop("the 'cost' parameter has been expanded to and replaced by
 costp_l1, costp_l2, costq_l1, and costq_l2 since version 0.4")
-        
+
         if(!inherits(train_data, "DataSource") || !isS4(train_data))
             stop("'train_data' should be an object of class 'DataSource'")
-        
+
         ## Tuning parameters: dim, costp_*, costq_*, lrate
         ## First set up default values
         opts_tune = list(dim      = c(10L, 20L),
@@ -179,23 +180,23 @@ costp_l1, costp_l2, costq_l1, and costq_l2 since version 0.4")
                          costq_l1 = c(0, 0.1),
                          costq_l2 = c(0.01, 0.1),
                          lrate    = c(0.01, 0.1))
-        
+
         ## Update opts_tune from opts
         opts = as.list(opts)
         opts_common = intersect(names(opts_tune), names(opts))
         opts_tune[opts_common] = opts[opts_common]
         opts_tune = lapply(opts_tune, as.numeric)
         opts_tune$dim = as.integer(opts_tune$dim)
-        
+
         ## Expand combinations
         opts_tune = expand.grid(opts_tune)
-        
+
         ## Other options
         opts_train = list(loss = "l2", nfold = 5L, niter = 20L, nthread = 1L,
                           nbin = 20L, nmf = FALSE, verbose = FALSE, progress = TRUE)
         opts_common = intersect(names(opts_train), names(opts))
         opts_train[opts_common] = opts[opts_common]
-        
+
         loss_fun = c("l2" = 0, "l1" = 1, "kl" = 2,
                      "log" = 5, "squared_hinge" = 6, "hinge" = 7,
                      "row_log" = 10, "col_log" = 11)
@@ -204,10 +205,9 @@ costp_l1, costp_l2, costq_l1, and costq_l2 since version 0.4")
         if(opts_train$loss == "kl" && (!opts_train$nmf))
             stop("nmf must be TRUE if loss == 'kl'")
         opts_train$loss = as.integer(loss_fun[opts_train$loss])
-        
-        loss_fun = .Call("reco_tune", train_data, opts_tune, opts_train,
-                         PACKAGE = "recosystem")
-        
+
+        loss_fun = .Call(reco_tune, train_data, opts_tune, opts_train)
+
         opts_tune$loss_fun = loss_fun
         opts_tune = na.omit(opts_tune)
         if(!nrow(opts_tune))
@@ -215,7 +215,7 @@ costp_l1, costp_l2, costq_l1, and costq_l2 since version 0.4")
 
         tune_min = as.list(opts_tune[which.min(loss_fun), ])
         attr(tune_min, "out.attrs") = NULL
-        
+
         return(list(min = tune_min, res = opts_tune))
     }
 )
@@ -223,27 +223,30 @@ costp_l1, costp_l2, costq_l1, and costq_l2 since version 0.4")
 
 
 #' Training a Recommender Model
-#' 
+#'
 #' @description This method is a member function of class "\code{RecoSys}"
 #' that trains a recommender model. It will read from a training data source and
 #' create a model file at the specified location. The model file contains
 #' necessary information for prediction.
-#' 
+#'
 #' The common usage of this method is
 #' \preformatted{r = Reco()
 #' r$train(train_data, out_model = file.path(tempdir(), "model.txt"),
 #'         opts = list())}
-#' 
+#'
 #' @name train
-#' 
+#'
 #' @param r Object returned by \code{\link{Reco}}().
 #' @param train_data An object of class "DataSource" that describes the source
 #'                   of training data, typically returned by function
-#'                   \code{\link{data_file}()} or \code{\link{data_memory}()}.
+#'                   \code{\link{data_file}()}, \code{\link{data_memory}()},
+#'                   or \code{\link{data_matrix}()}.
 #' @param out_model Path to the model file that will be created.
+#'                  If passing \code{NULL}, the model will be stored in-memory, and
+#'                  model matrices can then be accessed under \code{r$model$matrices}.
 #' @param opts A number of parameters and options for the model training.
 #'             See section \strong{Parameters and Options} for details.
-#'             
+#'
 #' @section Parameters and Options:
 #' The \code{opts} argument is a list that can supply any of the following parameters:
 #'
@@ -266,17 +269,17 @@ costp_l1, costp_l2, costq_l1, and costq_l2 since version 0.4")
 #' \item{\code{verbose}}{Logical, whether to show detailed information. Default is
 #'                       \code{TRUE}.}
 #' }
-#' 
+#'
 #' The \code{loss} option may take the following values:
-#' 
+#'
 #' For real-valued matrix factorization,
-#' 
+#'
 #' \describe{
 #' \item{\code{"l2"}}{Squared error (L2-norm)}
 #' \item{\code{"l1"}}{Absolute error (L1-norm)}
 #' \item{\code{"kl"}}{Generalized KL-divergence}
 #' }
-#' 
+#'
 #' For binary matrix factorization,
 #'
 #' \describe{
@@ -284,35 +287,49 @@ costp_l1, costp_l2, costq_l1, and costq_l2 since version 0.4")
 #' \item{\code{"squared_hinge"}}{Squared hinge loss}
 #' \item{\code{"hinge"}}{Hinge loss}
 #' }
-#' 
+#'
 #' For one-class matrix factorization,
-#' 
+#'
 #' \describe{
 #' \item{\code{"row_log"}}{Row-oriented pair-wise logarithmic loss}
 #' \item{\code{"col_log"}}{Column-oriented pair-wise logarithmic loss}
 #' }
-#' 
+#'
 #' @examples ## Training model from a data file
 #' train_set = system.file("dat", "smalltrain.txt", package = "recosystem")
+#' train_data = data_file(train_set)
 #' r = Reco()
 #' set.seed(123) # This is a randomized algorithm
-#' r$train(data_file(train_set),
+#' # The model will be saved to a file
+#' r$train(train_data, out_model = file.path(tempdir(), "model.txt"),
 #'         opts = list(dim = 20, costp_l2 = 0.01, costq_l2 = 0.01, nthread = 1)
 #' )
-#' 
+#'
 #' ## Training model from data in memory
 #' train_df = read.table(train_set, sep = " ", header = FALSE)
+#' train_data = data_memory(train_df[, 1], train_df[, 2], rating = train_df[, 3])
 #' set.seed(123)
-#' r$train(data_memory(train_df[, 1], train_df[, 2], train_df[, 3]),
+#' # The model will be stored in memory
+#' r$train(train_data, out_model = NULL,
 #'         opts = list(dim = 20, costp_l2 = 0.01, costq_l2 = 0.01, nthread = 1)
 #' )
-#' 
+#'
+#' ## Training model from data in a sparse matrix
+#' if(require(Matrix))
+#' {
+#'     mat = Matrix::sparseMatrix(i = train_df[, 1], j = train_df[, 2], x = train_df[, 3],
+#'                                repr = "T", index1 = FALSE)
+#'     train_data = data_matrix(mat)
+#'     r$train(train_data, out_model = NULL,
+#'             opts = list(dim = 20, costp_l2 = 0.01, costq_l2 = 0.01, nthread = 1))
+#' }
+#'
 #' @author Yixuan Qiu <\url{https://statr.me}>
 #' @seealso \code{$\link{tune}()}, \code{$\link{output}()}, \code{$\link{predict}()}
 #' @references W.-S. Chin, Y. Zhuang, Y.-C. Juan, and C.-J. Lin.
 #' A Fast Parallel Stochastic Gradient Method for Matrix Factorization in Shared Memory Systems.
 #' ACM TIST, 2015.
-#' 
+#'
 #' W.-S. Chin, Y. Zhuang, Y.-C. Juan, and C.-J. Lin.
 #' A Learning-rate Schedule for Stochastic Gradient Methods to Matrix Factorization.
 #' PAKDD, 2015.
@@ -323,8 +340,7 @@ costp_l1, costp_l2, costq_l1, and costq_l2 since version 0.4")
 NULL
 
 RecoSys$methods(
-    train = function(train_data, out_model = file.path(tempdir(), "model.txt"),
-                     opts = list())
+    train = function(train_data, out_model = NULL, opts = list())
     {
         ## Backward compatibility for version 0.3
         if(is.character(train_data))
@@ -336,12 +352,10 @@ use data_file(path) for argument 'train_data' instead")
         if("cost" %in% names(opts))
             stop("the 'cost' parameter has been expanded to and replaced by
 costp_l1, costp_l2, costq_l1, and costq_l2 since version 0.4")
-        
+
         if(!inherits(train_data, "DataSource") || !isS4(train_data))
             stop("'train_data' should be an object of class 'DataSource'")
-        
-        model_path = path.expand(out_model)
-        
+
         ## Parse options
         opts_train = list(loss = "l2",
                           dim = 10L,
@@ -353,7 +367,7 @@ costp_l1, costp_l2, costq_l1, and costq_l2 since version 0.4")
         opts = as.list(opts)
         opts_common = intersect(names(opts), names(opts_train))
         opts_train[opts_common] = opts[opts_common]
-        
+
         loss_fun = c("l2" = 0, "l1" = 1, "kl" = 2,
                      "log" = 5, "squared_hinge" = 6, "hinge" = 7,
                      "row_log" = 10, "col_log" = 11)
@@ -362,16 +376,25 @@ costp_l1, costp_l2, costq_l1, and costq_l2 since version 0.4")
         if(opts_train$loss == "kl" && (!opts_train$nmf))
             stop("nmf must be TRUE if loss == 'kl'")
         opts_train$loss = as.integer(loss_fun[opts_train$loss])
-        
-        model_param = .Call("reco_train", train_data, model_path, opts_train,
-                            PACKAGE = "recosystem")
-        
-        .self$model$path  = model_path
+
+        ## `model_path = NULL` indicates that the model will not be saved to hard disk
+        model_path = if(is.null(out_model)) NULL else path.expand(out_model)
+        model_param = .Call(reco_train, train_data, model_path, opts_train)
+
+        .self$model$path = if(is.null(out_model)) "" else model_path
         .self$model$nuser = model_param$nuser
         .self$model$nitem = model_param$nitem
         .self$model$nfac  = model_param$nfac
+        if(length(model_param$matrices))
+        {
+            .self$model$matrices = list(
+                P = new("float32", Data = model_param$matrices$P),
+                Q = new("float32", Data = model_param$matrices$Q),
+                b = new("float32", Data = model_param$matrices$b)
+            )
+        }
         .self$train_pars  = opts_train
-        
+
         invisible(.self)
     }
 )
@@ -379,20 +402,20 @@ costp_l1, costp_l2, costq_l1, and costq_l2 since version 0.4")
 
 
 #' Exporting Factorization Matrices
-#' 
+#'
 #' @description This method is a member function of class "\code{RecoSys}"
 #' that exports the user score matrix \eqn{P} and the item score matrix \eqn{Q}.
-#' 
+#'
 #' Prior to calling this method, model needs to be trained using member function
 #' \code{$\link{train}()}.
-#' 
+#'
 #' The common usage of this method is
 #' \preformatted{r = Reco()
 #' r$train(...)
 #' r$output(out_P = data_file("mat_P.txt"), out_Q = data_file("mat_Q.txt"))}
-#' 
+#'
 #' @name output
-#' 
+#'
 #' @param r Object returned by \code{\link{Reco}()}.
 #' @param out_P An object of class \code{Output} that specifies the
 #'              output format of the user matrix, typically returned by function
@@ -405,27 +428,28 @@ costp_l1, costp_l2, costq_l1, and costq_l2 since version 0.4")
 #'              into the return value of \code{$output()}.
 #'              \code{\link{out_nothing}()} means the matrix will not be exported.
 #' @param out_Q Ditto, but for the item matrix.
-#' 
+#'
 #' @return A list with components \code{P} and \code{Q}. They will be filled
 #'         with user or item matrix if \code{\link{out_memory}()} is used
 #'         in the function argument, otherwise \code{NULL} will be returned.
-#'         
-#' 
+#'
+#'
 #' @examples train_set = system.file("dat", "smalltrain.txt", package = "recosystem")
 #' r = Reco()
 #' set.seed(123) # This is a randomized algorithm
-#' r$train(data_file(train_set), opts = list(dim = 10, nmf = TRUE))
-#' 
+#' r$train(data_file(train_set), out_model = file.path(tempdir(), "model.txt"),
+#'         opts = list(dim = 10, nmf = TRUE))
+#'
 #' ## Write P and Q matrices to files
 #' P_file = out_file(tempfile())
 #' Q_file = out_file(tempfile())
 #' r$output(P_file, Q_file)
 #' head(read.table(P_file@dest, header = FALSE, sep = " "))
 #' head(read.table(Q_file@dest, header = FALSE, sep = " "))
-#' 
+#'
 #' ## Skip P and only export Q
 #' r$output(out_nothing(), Q_file)
-#' 
+#'
 #' ## Return P and Q in memory
 #' res = r$output(out_memory(), out_memory())
 #' head(res$P)
@@ -436,7 +460,7 @@ costp_l1, costp_l2, costq_l1, and costq_l2 since version 0.4")
 #' @references W.-S. Chin, Y. Zhuang, Y.-C. Juan, and C.-J. Lin.
 #' A Fast Parallel Stochastic Gradient Method for Matrix Factorization in Shared Memory Systems.
 #' ACM TIST, 2015.
-#' 
+#'
 #' W.-S. Chin, Y. Zhuang, Y.-C. Juan, and C.-J. Lin.
 #' A Learning-rate Schedule for Stochastic Gradient Methods to Matrix Factorization.
 #' PAKDD, 2015.
@@ -462,29 +486,60 @@ use out_file(path) for argument 'out_P' instead")
 use out_file(path) for argument 'out_Q' instead")
             out_Q = out_file(out_Q)
         }
-        
+
         ## Check whether model has been trained
+        ## If the model is saved to hard disk, check whether the model file exists
+        ## If the model is stored in memory, check whether .self$model$matrices contains data
         model_path = .self$model$path
-        if(!file.exists(model_path))
+        trained = file.exists(model_path) || length(.self$model$matrices)
+        if(!trained)
         {
             stop("model not trained yet
 [Call $train() method to train model]")
         }
-        
-        res = .Call("reco_output", model_path, out_P, out_Q, PACKAGE = "recosystem")
+
         P = NULL
         Q = NULL
-        
+
+        ## If model matrices are stored in memory, we directly export them
+        if(length(.self$model$matrices))
+        {
+            ## Convert to double
+            Pd = t(as.double(.self$model$matrices$P))
+            Qd = t(as.double(.self$model$matrices$Q))
+
+            if(out_P@type == "file")
+            {
+                write.table(Pd, out_P@dest, row.names = FALSE, col.names = FALSE, na = "NaN")
+                cat(sprintf("P matrix generated at %s\n", out_P@dest))
+            }
+            if(out_P@type == "memory")
+                P = Pd
+
+            if(out_Q@type == "file")
+            {
+                write.table(Qd, out_Q@dest, row.names = FALSE, col.names = FALSE, na = "NaN")
+                cat(sprintf("Q matrix generated at %s\n", out_Q@dest))
+            }
+            if(out_Q@type == "memory")
+                Q = Qd
+
+            return(list(P = P, Q = Q))
+        }
+
+        ## Otherwise, first read model file, and then output matrices
+        res = .Call(reco_output, model_path, out_P, out_Q)
+
         if(out_P@type == "file")
             cat(sprintf("P matrix generated at %s\n", out_P@dest))
         if(out_P@type == "memory")
             P = t(res$Pdata)
-        
+
         if(out_Q@type == "file")
             cat(sprintf("Q matrix generated at %s\n", out_Q@dest))
         if(out_Q@type == "memory")
             Q = t(res$Qdata)
-        
+
         return(list(P = P, Q = Q))
     }
 )
@@ -492,24 +547,25 @@ use out_file(path) for argument 'out_Q' instead")
 
 
 #' Recommender Model Predictions
-#' 
+#'
 #' @description This method is a member function of class "\code{RecoSys}"
 #' that predicts unknown entries in the rating matrix.
-#' 
+#'
 #' Prior to calling this method, model needs to be trained using member function
 #' \code{$\link{train}()}.
-#' 
+#'
 #' The common usage of this method is
 #' \preformatted{r = Reco()
 #' r$train(...)
 #' r$predict(test_data, out_pred = data_file("predict.txt")}
-#' 
+#'
 #' @name predict
-#' 
+#'
 #' @param r Object returned by \code{\link{Reco}()}.
-#' @param train_data An object of class "DataSource" that describes the source
-#'                   of testing data, typically returned by function
-#'                   \code{\link{data_file}()} or \code{\link{data_memory}()}.
+#' @param test_data An object of class "DataSource" that describes the source
+#'                  of testing data, typically returned by function
+#'                   \code{\link{data_file}()}, \code{\link{data_memory}()},
+#'                   or \code{\link{data_matrix}()}.
 #' @param out_pred An object of class \code{Output} that specifies the
 #'                 output format of prediction, typically returned by function
 #'                 \code{\link{out_file}()}, \code{\link{out_memory}()} or
@@ -527,31 +583,42 @@ use out_file(path) for argument 'out_Q' instead")
 #' r = Reco()
 #' set.seed(123) # This is a randomized algorithm
 #' opts_tune = r$tune(train_file)$min
-#' r$train(train_file, opts = opts_tune)
-#' 
+#' r$train(train_file, out_model = NULL, opts = opts_tune)
+#'
 #' ## Write predicted values into file
 #' out_pred = out_file(tempfile())
 #' r$predict(test_file, out_pred)
-#' 
+#'
 #' ## Return predicted values in memory
 #' pred = r$predict(test_file, out_memory())
-#' 
+#'
 #' ## If testing data are stored in memory
 #' test_df = read.table(test_file@source, sep = " ", header = FALSE)
-#' pred2 = r$predict(data_memory(test_df[, 1], test_df[, 2]), out_memory())
+#' test_data = data_memory(test_df[, 1], test_df[, 2])
+#' pred2 = r$predict(test_data, out_memory())
 #'
 #' ## Compare results
 #' print(scan(out_pred@dest, n = 10))
 #' head(pred, 10)
 #' head(pred2, 10)
+#'
+#' ## If testing data are stored as a sparse matrix
+#' if(require(Matrix))
+#' {
+#'     mat = Matrix::sparseMatrix(i = test_df[, 1], j = test_df[, 2], x = -1,
+#'                                repr = "T", index1 = FALSE)
+#'     test_data = data_matrix(mat)
+#'     pred3 = r$predict(test_data, out_memory())
+#'     print(head(pred3, 10))
 #' }
-#' 
+#' }
+#'
 #' @author Yixuan Qiu <\url{https://statr.me}>
 #' @seealso \code{$\link{train}()}
 #' @references W.-S. Chin, Y. Zhuang, Y.-C. Juan, and C.-J. Lin.
 #' A Fast Parallel Stochastic Gradient Method for Matrix Factorization in Shared Memory Systems.
 #' ACM TIST, 2015.
-#' 
+#'
 #' W.-S. Chin, Y. Zhuang, Y.-C. Juan, and C.-J. Lin.
 #' A Learning-rate Schedule for Stochastic Gradient Methods to Matrix Factorization.
 #' PAKDD, 2015.
@@ -562,7 +629,7 @@ use out_file(path) for argument 'out_Q' instead")
 NULL
 
 RecoSys$methods(
-    predict = function(test_data, out_pred = out_file("predict.txt"))
+    predict = function(test_data, out_pred = out_memory())
     {
         ## Backward compatibility for version 0.3
         if(is.character(test_data))
@@ -577,26 +644,41 @@ use data_file(path) for argument 'test_data' instead")
 use out_file(path) for argument 'out_pred' instead")
             out_pred = out_file(out_pred)
         }
-        
+
         if(!inherits(test_data, "DataSource") || !isS4(test_data))
             stop("'test_data' should be an object of class 'DataSource'")
-        
+
         ## Check whether model has been trained
+        ## If the model is saved to hard disk, check whether the model file exists
+        ## If the model is stored in memory, check whether .self$model$matrices contains data
         model_path = .self$model$path
-        if(!file.exists(model_path))
+        trained = file.exists(model_path) || length(.self$model$matrices)
+        if(!trained)
         {
             stop("model not trained yet
 [Call $train() method to train model]")
         }
-        
-        res = .Call("reco_predict", test_data, model_path, out_pred, PACKAGE = "recosystem")
-        
+
+        model_inmemory = list()
+        if(length(.self$model$matrices)) {
+            model_inmemory = list(
+                P = .self$model$matrices$P@Data,
+                Q = .self$model$matrices$Q@Data,
+                b = .self$model$matrices$b@Data,
+                m = .self$model$nuser,
+                n = .self$model$nitem,
+                k = .self$model$nfac,
+                fun = .self$train_pars$loss
+            )
+        }
+        res = .Call(reco_predict, test_data, model_path, out_pred, model_inmemory)
+
         if(out_pred@type == "file")
             cat(sprintf("prediction output generated at %s\n", out_pred@dest))
-        
+
         if(out_pred@type != "memory")
             return(invisible(NULL))
-        
+
         return(res)
     }
 )
@@ -606,11 +688,11 @@ RecoSys$methods(
     {
         cat("[=== Fitted Model ===]\n\n")
         .self$model$show()
-        
+
         cat("\n\n[=== Training Options ===]\n\n")
         catl = function(key, val, ...)
             cat(sprintf("%-20s = %s\n", key, val), ..., sep = "")
-        
+
         loss = .self$train_pars$loss
         loss_fun_name = if(is.null(loss)) character(0) else switch(as.character(loss),
             "0" = "Squared error (L2-norm)",
@@ -623,7 +705,7 @@ RecoSys$methods(
             "11" = "Column-oriented pair-wise logarithmic loss",
             "Unknown"
         )
-        
+
         catl("Loss function",        loss_fun_name)
         catl("L1 penalty for P",     .self$train_pars$costp_l1)
         catl("L2 penalty for P",     .self$train_pars$costp_l2)
@@ -634,7 +716,7 @@ RecoSys$methods(
         catl("Number of iterations", .self$train_pars$niter)
         catl("Number of threads",    .self$train_pars$nthread)
         catl("Verbose",              .self$train_pars$verbose)
-        
+
         invisible(.self)
     }
 )
